@@ -24,17 +24,35 @@ public class InsertElements {
         MongoDatabase database = mongoClient.getDatabase("mongo_connection")
                 .withCodecRegistry(pojoCodecRegistry);
 
+        //Inserir dados
         MongoCollection<Foods> collection = database.getCollection("Testes", Foods.class);
-
-
         List<Foods> foods = asList(
-                new Foods(false,"teste1",5),
-                new Foods(true,"teste2",3),
-                new Foods(false,"teste3",8)
+                new Foods(false,"teste4",22),
+                new Foods(true,"teste5",12),
+                new Foods(false,"teste6",45)
         );
-        collection.insertMany(foods);
+//        collection.insertMany(foods);
+//        System.out.println(foods);
 
-        System.out.println(foods);
+        //Acessar dados
+    };
+
+    public void search(){
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+//    sudo systemctl start mongod
+//    sudo systemctl status mongod
+//    sudo service mongod start
+//    sudo service mongod status
+//    mongo

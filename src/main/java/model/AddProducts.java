@@ -1,86 +1,94 @@
 package model;
-
 import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.Document;
 
-import java.net.UnknownHostException;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+import java.net.*;
 
 public class AddProducts {
-//    private MongoClient connection;
-//    private MongoDatabase database;
-//
-//    @Override
-//    public String toString() {
-//        return "AddProducts{" +
-//                "connection=" + connection +
-//                ", database=" + database +
-//                '}';
-//    }
-
-
-    @Override
-    public String toString() {
-        return "AddProducts{}";
-    }
+    private MongoClient connection;
+    private MongoDatabase database;
 
     public void addProduct(Foods insert) throws MongoException{
-        CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-        MongoClient mongoClient = new MongoClient("localhost", MongoClientOptions.builder().codecRegistry(pojoCodecRegistry).build());
-        MongoDatabase mongoDatabase = mongoClient.getDatabase("mongo_connection").withCodecRegistry(pojoCodecRegistry);
+        this.connection = new MongoClient("localhost");
+        this.database = connection.getDatabase("mongo_connection");
 
-        MongoCollection<Foods> c = mongoDatabase.getCollection("product", Foods.class);
-//        c.insertOne(new Foods(true, "Banana", 4));
-//        MongoCursor<Foods> inseridos = c.find(Filters.eq("isPerishable"), Foods.class).iterator();
+        try {
+            BasicDBObject newProduct = new BasicDBObject();
+            newProduct.put("isPerishable", insert.isPerishable());
+            newProduct.put("description", insert.getDescription());
+            newProduct.put("price", insert.getPrice());
 
-        List<Foods> foods = asList(
-                new Foods(false,"Arroz",5),
-                new Foods(true,"Maçã",3),
-                new Foods(false,"Café",8)
-        );
-        c.insertMany(foods);
+            DBCollection insertFoods = (DBCollection) database.getCollection("product");
+            insertFoods.insert(newProduct);
+            System.out.println("PRODUTO INSERIDO NO BANCO DE DADOS COM SUCESSO!\n" + newProduct);
+
+        }  catch (Exception exception){
+            System.err.println("=====================\n"
+                    + "Produto não inserido \n"
+                    + "Erro: "+exception.getClass().getName() + "\n"
+                    + "Mensagem: " + exception.getMessage()+"\n"
+                    + "=====================\n");
+        }
+    }
+
+    public void getProduct() throws UnknownHostException, MongoException {
+        this.connection = new MongoClient("localhost");
+        this.database = connection.getDatabase("mongo_connection");
+
+        try{
+            FindIterable<Document> cursor = database.getCollection("product").find();
+            System.out.println("--------");
+            while (cursor.sort(cursor.first()) {
+                BasicDBObject produtos;
+                produtos = (BasicDBObject) cursor.cursor();
+                System.out.println("Perecivel: " + produtos.getBoolean("isPerishable"));
+                System.out.println("Nome: " + produtos.getBoolean("description"));
+                System.out.println("Preço: " + produtos.getBoolean("Price"));
+            }
+        } catch (Exception exception){
+            System.err.println("=====================\n"
+                    + "Produto não inserido \n"
+                    + "Erro: "+exception.getClass().getName() + "\n"
+                    + "Mensagem: " + exception.getMessage()+"\n"
+                    + "=====================\n");
+        }
+    }
+
+}
+
+//    sudo systemctl start mongod
+//    sudo systemctl status mongod
+//    sudo service mongod start
+//    sudo service mongod status
+//    mongo
 
 
-        System.out.println("================\n"
-                + "Produtos Inseridos:\n"
-                + c
-                + "\n================");
+//        CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+//        MongoClient mongoClient = new MongoClient("localhost", MongoClientOptions.builder().codecRegistry(pojoCodecRegistry).build());
+//        MongoDatabase mongoDatabase = mongoClient.getDatabase("mongo_connection").withCodecRegistry(pojoCodecRegistry);
+//
+//        MongoCollection<Foods> insertFoodsList = mongoDatabase.getCollection("product", Foods.class);
+//        insertFoodsList.insertOne(new Foods(true, "Banana", 4));
+//        MongoCursor<Foods> inseridos = conectionFoods.find(Filters.eq("isPerishable"), Foods.class).iterator();
+//
+//        List<Foods> foods = asList(
+//                new Foods(false,"Arroz",5),
+//                new Foods(true,"Maçã",3),
+//                new Foods(false,"Café",8)
+//        );
+//        insertFoodsList.insertMany(foods);
+
+
+
+
+
+
+//        System.out.println("================\n"
+//                + "Produtos Inseridos:\n"
+//                + c
+//                + "\n================");
 
 //        this.connection = new MongoClient("127.0.0.1", MongoClientOptions.builder().codecRegistry(pojoCodecRegistry).build());
 //        this.database = connection.getDatabase("mongo_connection");
-
-//        try {
-//            BasicDBObject newProduct = new BasicDBObject();
-//
-//            newProduct.put("isPerishable", insert.getPerishable());
-//            newProduct.put("description", insert.getDescription());
-//            newProduct.put("price", insert.getPrice());
-//
-//            DBCollection c = (DBCollection) mongoDatabase.getCollection("product");
-//            c.insert(newProduct);
-//            System.out.println("PRODUTO INSERIDO NO BANCO DE DADOS COM SUCESSO!");
-//        }  catch (Exception exception){
-//            System.err.println("=====================\n"
-//                    + "Produto não inserido \n"
-//                    + "Erro: "+exception.getClass().getName() + "\n"
-//                    + "Mensagem: " + exception.getMessage()+"\n"
-//                    + "=====================\n");
-//        }
-
-
-
-
-
-    }
-
-
-}

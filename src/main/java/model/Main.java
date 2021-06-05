@@ -2,8 +2,10 @@ package model;
 
 import com.mongodb.MongoException;
 
+import java.net.UnknownHostException;
+
 public class Main {
-    public static void main(String[] args) throws MongoException {
+    public static void main(String[] args) throws MongoException, UnknownHostException {
         Foods f1 = new Foods(true, "Banana", 5);
 
 //        List<Foods> foods = asList(
@@ -14,7 +16,8 @@ public class Main {
 
         AddProducts connection = new AddProducts();
 
-        connection.addProduct(f1);
+        connection.getProduct();
+//        connection.addProduct(f1);
         System.out.println("Conexão Realizada");
 
     }

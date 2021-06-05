@@ -11,7 +11,7 @@ public class Foods {
         this.price = price;
     }
 
-    public boolean getPerishable() {
+    public boolean isPerishable() {
         return isPerishable;
     }
 
@@ -44,4 +44,3 @@ public class Foods {
                 '}';
     }
 }
-
