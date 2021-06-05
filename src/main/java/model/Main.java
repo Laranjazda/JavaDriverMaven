@@ -18,7 +18,7 @@ public class Main {
 
         connection.getProduct();
 //        connection.addProduct(f1);
-        System.out.println("Conexão Realizada");
+        System.out.println(f1);
 
     }
 }

@@ -1,13 +1,14 @@
 package view;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientSettings;
+import com.mongodb.*;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import model.Foods;
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
+import java.net.UnknownHostException;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -24,27 +25,47 @@ public class InsertElements {
         MongoDatabase database = mongoClient.getDatabase("mongo_connection")
                 .withCodecRegistry(pojoCodecRegistry);
 
-        //Inserir dados
-        MongoCollection<Foods> collection = database.getCollection("Testes", Foods.class);
+//        //Inserir dados
+        MongoCollection<Foods> collection = database.getCollection("product", Foods.class);
         List<Foods> foods = asList(
                 new Foods(false,"teste4",22),
                 new Foods(true,"teste5",12),
-                new Foods(false,"teste6",45)
+                new Foods(true,"teste6",45)
         );
-//        collection.insertMany(foods);
-//        System.out.println(foods);
-
-        //Acessar dados
+        collection.insertMany(foods);
+        System.out.println(foods);
     };
-
-    public void search(){
-
+    //Acessar dados
+//    public void getProduct() throws UnknownHostException, MongoException {
+//        CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+//                fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+//
+//        MongoClient mongoClient = new MongoClient("localhost", MongoClientOptions.builder().codecRegistry(pojoCodecRegistry).build());
+//
+//        MongoDatabase database = mongoClient.getDatabase("mongo_connection")
+//                .withCodecRegistry(pojoCodecRegistry);
+//
+//        //Inserir dados
+//        MongoCollection<Foods> collection = database.getCollection("product", Foods.class);
+//
+//        try{
+//            FindIterable<Document> cursor = database.getCollection("product").find();
+//            System.out.println("--------");
+//            while (cursor == (FindIterable<Document>) database.getCollection ("product", Foods.class)) {
+//                BasicDBObject produtos;
+//                produtos = (BasicDBObject) cursor.cursor();
+//                System.out.println("Perecivel: " + produtos.getBoolean("isPerishable"));
+//                System.out.println("Nome: " + produtos.getBoolean("description"));
+//                System.out.println("Preço: " + produtos.getBoolean("Price"));
+//            }
+//        } catch (Exception exception){
+//            System.err.println("=====================\n"
+//                    + "Produto não inserido \n"
+//                    + "Erro: "+exception.getClass().getName() + "\n"
+//                    + "Mensagem: " + exception.getMessage()+"\n"
+//                    + "=====================\n");
+//        }
     }
-}
-
-
-
-
 
 
 

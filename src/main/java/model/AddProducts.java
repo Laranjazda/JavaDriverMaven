@@ -40,7 +40,7 @@ public class AddProducts {
         try{
             FindIterable<Document> cursor = database.getCollection("product").find();
             System.out.println("--------");
-            while (cursor.sort(cursor.first()) {
+            while (cursor == (FindIterable<Document>) database.getCollection ("product", Foods.class)) {
                 BasicDBObject produtos;
                 produtos = (BasicDBObject) cursor.cursor();
                 System.out.println("Perecivel: " + produtos.getBoolean("isPerishable"));
