@@ -1,14 +1,24 @@
 package model;
 
 public class Foods {
+    private String category;
     private boolean isPerishable;
     private String description;
     private float price;
 
-    public Foods(boolean isPerishable, String description, float price) {
+    public Foods(String category, boolean isPerishable, String description, float price) {
+        this.category = category;
         this.isPerishable = isPerishable;
         this.description = description;
         this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public boolean isPerishable() {
@@ -35,12 +45,5 @@ public class Foods {
         this.price = price;
     }
 
-    @Override
-    public String toString() {
-        return "Foods{" +
-                "isPerishable=" + isPerishable +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                '}';
-    }
+
 }
